@@ -1,14 +1,15 @@
-FROM nodered/node-red:latest
+FROM ubuntu:latest
 
-USER root
+RUN apt update && apt install -y --no-install-recommends \
+  bluetooth \
+  bluez \
+  libbluetooth-dev \
+  libudev-dev \
+  build-essential bluez-tools \
+  git \
+  python3-pip \
+  python3
 
-RUN apk update && apk add bluez openrc
+RUN git clone https://github.com/NaitLee/Cat-Printer.git
 
-RUN rc-update add bluetooth
-
-USER node-red
-
-RUN npm install --quiet \
-    noble
-
-EXPOSE 1880
+ENTRYPOINT [ "python3" , "cat-pinter/server.py"]
